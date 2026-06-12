@@ -107,16 +107,34 @@
 
 .gallery__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 0;
+  grid-template-columns: 1fr;
+  gap: 12px;
   margin: 20px 0 0;
 }
 
 .gallery__loading {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 0;
+  grid-template-columns: 1fr;
+  gap: 12px;
   margin: 20px 0 0;
+}
+
+@media (min-width: 640px) {
+  .gallery__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .gallery__loading {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .gallery__grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+  .gallery__loading {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
 }
 
 .skeleton-card {
@@ -129,8 +147,9 @@
   );
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
-  border-right: var(--bw) solid var(--border);
-  border-bottom: var(--bw) solid var(--border);
+  border: var(--bw-thick) solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: 6px 6px 0 var(--ink);
 }
 
 @keyframes shimmer {
@@ -145,15 +164,17 @@
 /* Student card */
 .student-card {
   background: var(--white);
-  border-right: var(--bw) solid var(--border);
-  border-bottom: var(--bw) solid var(--border);
+  border: var(--bw-thick) solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: 6px 6px 0 var(--ink);
   transition: var(--t);
   cursor: default;
+  overflow: hidden;
 }
 .student-card:hover {
   background: var(--green-tint);
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0 var(--ink);
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 var(--ink);
   position: relative;
   z-index: 1;
 }
@@ -165,7 +186,6 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-bottom: var(--bw) solid var(--border);
 }
 .student-card__avatar img {
   width: 100%;
@@ -309,12 +329,17 @@
     flex-direction: column;
     align-items: stretch;
     padding: 24px 28px 8px;
+    max-width: 100%;
   }
   .gallery__search {
     min-width: 0;
   }
   .gallery__grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .gallery__grid-wrap {
+    padding: 0 16px;
   }
 }
 
