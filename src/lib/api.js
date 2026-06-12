@@ -212,6 +212,15 @@ export async function addNotification(notif) {
   if (error) throw error
 }
 
+export async function invokeEmailAlert(payload) {
+  const { data, error } = await supabase.functions.invoke('send-email-alerts', {
+    body: payload,
+  })
+
+  if (error) throw error
+  return data
+}
+
 export async function fetchNotifications() {
   const { data, error } = await supabase
     .from('notifications')

@@ -3,6 +3,21 @@
 -- Run this in: Supabase Dashboard → SQL Editor → New query
 -- ============================================================
 
+-- ============================================================
+-- Reset section
+-- Drop the public schema objects we manage so this file can be rerun cleanly.
+-- ============================================================
+DROP TABLE IF EXISTS notifications CASCADE;
+DROP TABLE IF EXISTS subscribers CASCADE;
+DROP TABLE IF EXISTS students CASCADE;
+DROP TABLE IF EXISTS play_events CASCADE;
+DROP TABLE IF EXISTS recordings CASCADE;
+DROP TABLE IF EXISTS categories CASCADE;
+DROP TABLE IF EXISTS units CASCADE;
+DROP FUNCTION IF EXISTS increment_play_count() CASCADE;
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 -- ── Units ────────────────────────────────────────────────────
 CREATE TABLE units (
   id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -59,6 +74,7 @@ CREATE TRIGGER on_play_event
 CREATE TABLE students (
   id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   name text NOT NULL,
+  email text,
   department text NOT NULL,
   level text NOT NULL,
   hobbies text,
@@ -135,7 +151,8 @@ INSERT INTO units (name) VALUES
   ('Word'),
   ('Welfare'),
   ('Intercessory'),
-  ('Drama');
+  ('Drama')
+ON CONFLICT (name) DO NOTHING;
 
 INSERT INTO categories (name) VALUES
   ('Teaching'),
@@ -143,4 +160,5 @@ INSERT INTO categories (name) VALUES
   ('Evangelism'),
   ('Orientation'),
   ('Special Program'),
-  ('Workshop');
+  ('Workshop')
+ON CONFLICT (name) DO NOTHING;

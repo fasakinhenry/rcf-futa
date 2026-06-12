@@ -49,9 +49,8 @@ export default function Home() {
             </h1>
             <p className='hero__body'>
               The Workers in Training (WIT) program equips committed students of
-              the Redeemed Christian Fellowship, FUTA — spiritually,
-              practically, and relationally — for a lifetime of fruitful
-              ministry.
+              the Redeemed Christian Fellowship, FUTA spiritually, practically,
+              and relationally for a lifetime of fruitful ministry.
             </p>
             <div className='hero__actions'>
               <Link to='/playlist' className='btn btn--primary btn--lg'>
@@ -112,7 +111,7 @@ export default function Home() {
       </div>
 
       {/* ── About ────────────────────────────────────────────────────── */}
-      <section className='about container'>
+      <section className='about'>
         <div className='about__left'>
           <div className='eyebrow'>About the Program</div>
           <h2 className='heading-lg'>
@@ -181,7 +180,21 @@ export default function Home() {
         </div>
       </section>
 
-      <div style={{ height: 80 }} />
+      {/* Footer section */}
+      <div className='home-footer grid-bg'>
+        <p className='heading-md'>© {new Date().getFullYear()} RCF FUTA. All rights reserved.</p>
+        <p>
+          Built with ❤️ by{' '}
+          <a
+            href='https://linkedin.com/in/fasakin-henry'
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            Fasakin Henry
+          </a>{' '}
+          WIT 2026 cohort.{' '}
+        </p>
+      </div>
     </main>
   );
 }

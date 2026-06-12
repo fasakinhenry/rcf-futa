@@ -6,32 +6,33 @@ Official website for the Redeemed Christian Fellowship Workers in Training (WIT)
 
 ## Stack
 
-| Layer | Technology |
-|---|---|
-| Frontend | React 18 + Vite |
-| Routing | React Router v6 |
-| Database | Supabase (PostgreSQL) |
-| File storage | Cloudinary |
-| Icons | HugeIcons |
-| Fonts | Oswald (headers) + Geist (body) |
-| Deployment | Vercel (frontend) |
+| Layer        | Technology                      |
+| ------------ | ------------------------------- |
+| Frontend     | React 18 + Vite                 |
+| Routing      | React Router v6                 |
+| Database     | Supabase (PostgreSQL)           |
+| File storage | Cloudinary                      |
+| Icons        | HugeIcons                       |
+| Fonts        | Oswald (headers) + Geist (body) |
+| Deployment   | Vercel (frontend)               |
 
 ---
 
 ## Pages
 
-| Route | Description |
-|---|---|
-| `/` | Home — program overview, CTA |
-| `/gallery` | Student gallery — search, filter by unit/level, submit profile |
-| `/playlist` | Class recordings — Spotify-style player, search, filter, sort |
-| `/admin` | Admin dashboard — protected by env credentials |
+| Route       | Description                                                    |
+| ----------- | -------------------------------------------------------------- |
+| `/`         | Home — program overview, CTA                                   |
+| `/gallery`  | Student gallery — search, filter by unit/level, submit profile |
+| `/playlist` | Class recordings — Spotify-style player, search, filter, sort  |
+| `/admin`    | Admin dashboard — protected by env credentials                 |
 
 ---
 
 ## Features
 
 **Playlist / Audio Player**
+
 - Full Spotify-style player: play/pause, seek, skip ±15s, prev/next, playback speed (1×–2×), volume
 - Expandable panel with artwork, description, transcript (if provided), and queue view
 - EQ animation bars when playing
@@ -40,18 +41,22 @@ Official website for the Redeemed Christian Fellowship Workers in Training (WIT)
 - All play data stored in Supabase
 
 **Gallery**
+
 - Students submit profiles with photo, name, department, level, unit, hobbies
 - Photos uploaded directly to Cloudinary (with upload progress bar)
 - Profiles require admin approval before appearing
 - Search by name, department, hobbies; filter by unit and level
 
 **Notifications**
+
 - Bell icon in navbar shows unread count
 - Visitors enter their email to subscribe
 - When admin adds a recording, a notification is queued automatically
+- Resend emails notify subscribers when a new playlist drops and notify students when their gallery request is approved
 - Emails stored in Supabase `subscribers` table
 
 **Admin Dashboard** (`/admin`)
+
 - Protected login (username + password from env)
 - Analytics: students, weekly plays, all-time plays, recordings count, subscribers, pending approvals
 - Add recordings: upload audio file + cover image to Cloudinary, auto-detects duration
@@ -106,6 +111,13 @@ VITE_CLOUDINARY_UPLOAD_PRESET=rcf_futa_unsigned
 VITE_ADMIN_USERNAME=admin
 VITE_ADMIN_PASSWORD=your_secure_password
 VITE_SITE_URL=https://rcf-futa.vercel.app
+
+# Used by the Supabase Edge Function that sends emails through Resend
+SUPABASE_URL=https://xxxx.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxx
+RESEND_FROM_EMAIL=RCF FUTA <updates@yourdomain.com>
+SITE_URL=https://rcf-futa.vercel.app
 ```
 
 ### 5. Run locally
@@ -135,6 +147,7 @@ npm run dev
    - Audio is uploaded to Cloudinary (duration auto-detected)
    - Recording is saved to Supabase
    - A notification is pushed to all subscribers
+   - An email alert is sent to every subscribed address through Resend
 
 ---
 
@@ -147,6 +160,7 @@ In the admin "Add Recording" form, paste the transcript in the **Transcript** fi
 - Listeners can **click a block** to jump to that timestamp
 
 Example:
+
 ```
 Welcome to this session on prayer as a lifestyle.
 Today we'll be looking at three key principles from the life of Daniel.
@@ -172,12 +186,17 @@ notifications   — new recording alerts
 
 ## Environment Variables Reference
 
-| Variable | Description |
-|---|---|
-| `VITE_SUPABASE_URL` | Your Supabase project URL |
-| `VITE_SUPABASE_ANON_KEY` | Supabase anonymous/public key |
-| `VITE_CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name |
-| `VITE_CLOUDINARY_UPLOAD_PRESET` | Cloudinary unsigned upload preset name |
-| `VITE_ADMIN_USERNAME` | Admin dashboard username |
-| `VITE_ADMIN_PASSWORD` | Admin dashboard password |
-| `VITE_SITE_URL` | Deployed site URL (used in notification links) |
+| Variable                        | Description                                          |
+| ------------------------------- | ---------------------------------------------------- |
+| `VITE_SUPABASE_URL`             | Your Supabase project URL                            |
+| `VITE_SUPABASE_ANON_KEY`        | Supabase anonymous/public key                        |
+| `VITE_CLOUDINARY_CLOUD_NAME`    | Cloudinary cloud name                                |
+| `VITE_CLOUDINARY_UPLOAD_PRESET` | Cloudinary unsigned upload preset name               |
+| `VITE_ADMIN_USERNAME`           | Admin dashboard username                             |
+| `VITE_ADMIN_PASSWORD`           | Admin dashboard password                             |
+| `VITE_SITE_URL`                 | Deployed site URL (used in notification links)       |
+| `SUPABASE_URL`                  | Supabase project URL used by the email edge function |
+| `SUPABASE_SERVICE_ROLE_KEY`     | Service-role key used by the email edge function     |
+| `RESEND_API_KEY`                | Resend API key for sending emails                    |
+| `RESEND_FROM_EMAIL`             | Verified sender address for Resend                   |
+| `SITE_URL`                      | Public site URL used by the email edge function      |
