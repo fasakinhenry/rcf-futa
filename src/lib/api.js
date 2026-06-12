@@ -189,10 +189,16 @@ export async function deleteCategory(id) {
 export async function subscribeEmail(email) {
   const { data, error } = await supabase
     .from('subscribers')
-    .upsert({ email: email.toLowerCase().trim() }, { onConflict: 'email' })
-    .select()
-    .single()
+    .upsert(
+      { email: email.toLowerCase().trim() },
+      {
+        onConflict: 'email',
+        ignoreDuplicates: true
+      }
+    )
+
   if (error) throw error
+
   return data
 }
 
